@@ -1,0 +1,5 @@
+MongoDB Connected: usersdatabase-shard-00-02.zju3w.mongodb.net
+Testing login for b23358@students.iitmandi.ac.in with password Shubh123
+User found: Shubh
+Stored Hash: $2b$10$tpBULZt6GL2SDcJhcjIxceITMBwjKyrWi38FbMTrr4R29qXEUihSK
+Password Match Result: true
