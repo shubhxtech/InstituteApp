@@ -182,26 +182,8 @@ class _LoginPageState extends State<LoginPage> {
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "Please enter password.";
-                            } else if (!_isPasswordValid) {
-                              return "Password or Email is incorrect.";
                             }
                             return null;
-                          },
-                          onChanged: (String? value) async {
-                            if (currentUser != null) {
-                              if (validatePassword(
-                                  value ?? "", currentUser!.password ?? "")) {
-                                _isPasswordValid = true;
-                              } else {
-                                _isPasswordValid = false;
-                              }
-                            } else {
-                              _isPasswordValid = false;
-                            }
-                            setState(() {
-                              _isPasswordValid;
-                            });
-                            // log(_isPasswordValid.toString());
                           },
                           keyboardType: TextInputType.text,
                           errorText: errorPasswordValue,

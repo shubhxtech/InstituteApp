@@ -54,10 +54,24 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
+    console.log(`[LOGIN ATTEMPT] Email: ${email}`);
+
     // Check for user email
     const user = await User.findOne({ email });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (!user) {
+        console.log(`[LOGIN FAILED] User not found: ${email}`);
+        res.status(400);
+        throw new Error('Invalid credentials');
+    }
+
+    console.log(`[LOGIN] User found: ${user.name}`);
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    console.log(`[LOGIN] Password match: ${passwordMatch}`);
+
+    if (passwordMatch) {
+        console.log(`[LOGIN SUCCESS] User: ${email}`);
         res.json({
             _id: user.id,
             name: user.name,
@@ -67,6 +81,7 @@ const loginUser = asyncHandler(async (req, res) => {
             token: generateToken(user._id),
         });
     } else {
+        console.log(`[LOGIN FAILED] Invalid password for: ${email}`);
         res.status(400);
         throw new Error('Invalid credentials');
     }
