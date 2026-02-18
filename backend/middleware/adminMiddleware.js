@@ -18,23 +18,24 @@ const adminProtect = asyncHandler(async (req, res, next) => {
             req.user = await User.findById(decoded.id).select('-password');
 
             // Check if user has admin role
-            if (req.user.role !== 'admin') {
+            if (!req.user || req.user.role !== 'admin') {
                 res.status(403);
                 throw new Error('Not authorized as admin');
             }
 
             next();
         } catch (error) {
-            console.log(error);
-            res.status(401);
-            throw new Error('Not authorized');
+            // Preserve status code if already set (e.g. 403), otherwise default to 401
+            if (res.statusCode === 200) {
+                res.status(401);
+            }
+            throw error;
         }
-    }
-
-    if (!token) {
+    } else {
         res.status(401);
         throw new Error('Not authorized, no token');
     }
 });
 
 module.exports = { adminProtect };
+

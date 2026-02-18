@@ -1,4 +1,3 @@
-import 'package:mailer/mailer.dart';
 import '../repositories/user_repository.dart';
 
 class SendOTP {
@@ -6,7 +5,7 @@ class SendOTP {
 
   SendOTP(this.repository);
 
-  Future<SendReport?> execute(String name, String email, String password, String? image, int otp) {
-    return repository.sendOTP(name, email, password, image, otp);
+  Future<bool> execute(String name, String email, String password, String? image, int otp) async {
+    return await repository.sendOTP(name, email, password, image, otp);
   }
 }

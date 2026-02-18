@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export const IMAGE_BASE_URL = 'http://172.20.10.2:5000';
+// Set VITE_API_URL in admin-panel/.env for production deployment
+// e.g. VITE_API_URL=http://your-server.com:5000
+export const IMAGE_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const api = axios.create({
     baseURL: `${IMAGE_BASE_URL}/api`,

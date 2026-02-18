@@ -169,24 +169,15 @@ class UhlLink extends StatelessWidget {
           builder: (context, state) {
             return MaterialApp.router(
               title: 'UhlLink',
-              themeMode: state.isDark ? ThemeMode.dark : ThemeMode.light,
+              themeMode: ThemeMode.dark,
               theme: NewAppTheme.lightTheme,
               darkTheme: NewAppTheme.darkTheme,
               routerConfig: router,
               builder: (context, child) {
-                // Only apply gradient in dark mode
-                if (state.isDark) {
-                  return Container(
-                    decoration: const BoxDecoration(
-                      gradient: NewAppTheme.mainBgGradient,
-                    ),
-                    child: child,
-                  );
-                }
-                // Light mode: gradient background for glassmorphism
+                // Always use dark mode gradient
                 return Container(
                   decoration: const BoxDecoration(
-                    gradient: NewAppTheme.lightBgGradient,
+                    gradient: NewAppTheme.mainBgGradient,
                   ),
                   child: child,
                 );

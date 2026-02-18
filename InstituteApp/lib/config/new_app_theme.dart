@@ -75,6 +75,14 @@ class NewAppTheme {
         margin: EdgeInsets.zero,
       ),
       
+      // Input Decoration Theme
+      inputDecorationTheme: const InputDecorationTheme(
+        hintStyle: TextStyle(color: Colors.white70),
+        labelStyle: TextStyle(color: Colors.white70),
+        prefixIconColor: Colors.white70,
+        suffixIconColor: Colors.white70,
+      ),
+
       // AppBar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
@@ -141,6 +149,14 @@ class NewAppTheme {
         margin: EdgeInsets.zero,
       ),
       
+      // Input Decoration Theme
+      inputDecorationTheme: const InputDecorationTheme(
+        hintStyle: TextStyle(color: Colors.black54),
+        labelStyle: TextStyle(color: Colors.black87),
+        prefixIconColor: Colors.black54,
+        suffixIconColor: Colors.black54,
+      ),
+
       // AppBar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,

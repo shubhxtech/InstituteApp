@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:mailer/mailer.dart';
 import 'package:vertex/features/authentication/domain/entities/user_entity.dart';
 import 'package:vertex/features/authentication/domain/usecases/send_otp.dart';
 import 'package:vertex/features/authentication/domain/usecases/signin_user.dart';
@@ -63,9 +62,9 @@ class AuthenticationBloc
       SendOTPEvent event, Emitter<AuthenticationState> emit) async {
     emit(OTPSending());
     try {
-      SendReport? otp = await sendOTP.execute(
+      bool isSent = await sendOTP.execute(
           event.name, event.email, event.password, event.image, event.otp);
-      if (otp != null) {
+      if (isSent) {
         final user = {
           'name': event.name,
           'email': event.email,
@@ -76,7 +75,7 @@ class AuthenticationBloc
       } else {
         emit(const OTPSendingError(message: "Error during otp sending."));
       }
-    } on MailerException catch (e) {
+    } catch (e) {
       emit(OTPSendingError(message: "Error during sending otp : $e"));
     }
   }

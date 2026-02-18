@@ -6,8 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:vertex/config/routes/routes_consts.dart';
 import 'package:vertex/features/authentication/domain/entities/user_entity.dart';
 
-import '../utils/functions.dart';
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -21,18 +19,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    final dbConnection = connectToDB();
-
-    _checkUserLoggedIn(dbConnection);
+    _checkUserLoggedIn();
   }
 
-  Future<void> _checkUserLoggedIn(Future<void> dbConnection) async {
+  Future<void> _checkUserLoggedIn() async {
     try {
       // Check if a user token exists
       final token = await _storage.read(key: 'user');
-
-      // Wait for the database connection to complete
-      await dbConnection;
 
       // Navigate based on the token presence
       if (token != null) {

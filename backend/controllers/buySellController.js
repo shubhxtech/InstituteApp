@@ -52,11 +52,11 @@ const updateBuySellItem = asyncHandler(async (req, res) => {
         throw new Error('Item not found');
     }
 
-    // Check ownership
-    // if (item.soldBy !== req.user.email && !req.user.isAdmin) {
-    //     res.status(401);
-    //     throw new Error('User not authorized');
-    // }
+    // Check ownership: only the seller or an admin can update
+    if (item.soldBy !== req.user.email && req.user.role !== 'admin') {
+        res.status(403);
+        throw new Error('Not authorized to update this listing');
+    }
 
     const updatedItem = await BuySellItem.findByIdAndUpdate(
         req.params.id,
@@ -80,7 +80,11 @@ const deleteBuySellItem = asyncHandler(async (req, res) => {
         throw new Error('Item not found');
     }
 
-    // Check ownership logic here if needed
+    // Check ownership: only the seller or an admin can delete
+    if (item.soldBy !== req.user.email && req.user.role !== 'admin') {
+        res.status(403);
+        throw new Error('Not authorized to delete this listing');
+    }
 
     await item.deleteOne();
 

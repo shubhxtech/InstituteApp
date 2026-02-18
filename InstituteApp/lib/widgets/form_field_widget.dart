@@ -87,12 +87,12 @@ class _FormFieldWidgetState extends State<FormFieldWidget> {
           decoration: InputDecoration(
               errorText: widget.errorText,
               errorStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onError, fontSize: 12),
+                  color: Theme.of(context).colorScheme.error, fontSize: 12),
               contentPadding: EdgeInsets.symmetric(
                   vertical: 15, horizontal: widget.prefixIcon != null ? 0 : 15),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.scrim, width: 1),
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2), width: 1),
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
                   gapPadding: 24),
               prefixIcon: widget.prefixIcon != null
@@ -100,7 +100,7 @@ class _FormFieldWidgetState extends State<FormFieldWidget> {
                       widget.prefixIcon,
                       color: widget.focusNode.hasFocus
                           ? Theme.of(context).primaryColor
-                          : Theme.of(context).colorScheme.scrim,
+                          : Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                       size: 18,
                     )
                   : null,
@@ -115,15 +115,13 @@ class _FormFieldWidgetState extends State<FormFieldWidget> {
                             : Icons.visibility_off_rounded,
                         color: widget.focusNode.hasFocus
                             ? Theme.of(context).primaryColor
-                            : Theme.of(context).colorScheme.scrim,
+                            : Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                         size: 18,
                       ),
                     )
                   : null,
               hintText: widget.hintText,
-              hintStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.scrim,
-                  overflow: TextOverflow.ellipsis),
+              hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
               // hintMaxLines: 2,
               fillColor: Theme.of(context).cardColor,
               filled: true,
@@ -134,12 +132,12 @@ class _FormFieldWidgetState extends State<FormFieldWidget> {
                   gapPadding: 24),
               focusedErrorBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.onError, width: 1),
+                      color: Theme.of(context).colorScheme.error, width: 1),
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
                   gapPadding: 24),
               errorBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.onError, width: 1),
+                      color: Theme.of(context).colorScheme.error, width: 1),
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
                   gapPadding: 24)),
         ));

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler');
+const nodemailer = require('nodemailer');
 const User = require('../models/User');
 
 // @desc    Register new user
@@ -160,6 +161,38 @@ const updatePassword = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    Send OTP email for signup verification
+// @route   POST /api/auth/send-otp
+// @access  Public
+const sendOtp = asyncHandler(async (req, res) => {
+    const { name, email, otp } = req.body;
+
+    if (!email) {
+        res.status(400);
+        throw new Error('Email is required');
+    }
+
+    // Use provided OTP or generate 6-digit OTP
+    const otpToSend = otp || Math.floor(100000 + Math.random() * 900000);
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.LEAD_EMAIL,
+            pass: process.env.LEAD_PASSWORD,
+        },
+    });
+
+    await transporter.sendMail({
+        from: `"Vertex Team" <${process.env.LEAD_EMAIL}>`,
+        to: email,
+        subject: 'OTP for Sign Up on Vertex: IIT Mandi',
+        text: `Dear ${name || 'User'},\nYour OTP for Sign Up on Vertex is ${otpToSend}.\n\nBest Regards,\nVertex Team\nIIT Mandi, Kamand 175005`,
+    });
+
+    res.status(200).json({ otp: otpToSend });
+});
+
 // Generate JWT
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -174,4 +207,5 @@ module.exports = {
     checkEmail,
     updateProfile,
     updatePassword,
+    sendOtp,
 };

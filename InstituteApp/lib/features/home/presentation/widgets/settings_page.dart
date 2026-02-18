@@ -35,51 +35,6 @@ class _SettingsPageState extends State<SettingsPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Card(
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(
-                    color:
-                        Theme.of(context).colorScheme.onSurface.withAlpha(100),
-                    width: 1.5,
-                  )),
-              clipBehavior: Clip.hardEdge,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.aspectRatio * 132,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.06),
-                    Text("Switch Dark Theme",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(fontSize: 16)),
-                    const Expanded(child: SizedBox()),
-                    Transform.scale(
-                      scale: 0.8,
-                      child: Switch(
-                        value: context.watch<ThemeBloc>().state.isDark,
-                        onChanged: (value) {
-                          context.read<ThemeBloc>().add(ToggleTheme());
-                        },
-                        activeColor: Theme.of(context).colorScheme.onPrimary,
-                        activeTrackColor: Theme.of(context).primaryColor,
-                        inactiveThumbColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        inactiveTrackColor: Theme.of(context).colorScheme.scrim,
-                        trackOutlineColor:
-                            const WidgetStatePropertyAll(Colors.transparent),
-                      ),
-                    ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.06),
-                  ],
-                ),
-              ),
-            ),
             if (widget.user != null)
               CardWidget(
                   text: "Update Profile",

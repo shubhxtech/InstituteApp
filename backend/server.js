@@ -13,7 +13,8 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(express.json({ limit: '10mb' }));
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
@@ -54,6 +55,15 @@ const startServer = async () => {
         // Serve static assets
         app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
+        // Global error handler (must be after routes)
+        app.use((err, req, res, next) => {
+            const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+            res.status(statusCode).json({
+                message: err.message,
+                stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+            });
+        });
+
         // Start Server
         app.listen(PORT, () => {
             console.log(`Server running on port ${PORT}`);
@@ -65,3 +75,5 @@ const startServer = async () => {
 };
 
 startServer();
+
+module.exports = app; // Export for testing

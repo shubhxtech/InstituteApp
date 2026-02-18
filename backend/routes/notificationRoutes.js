@@ -5,7 +5,10 @@ const {
     createNotification,
 } = require('../controllers/notificationController');
 const { protect } = require('../middleware/authMiddleware');
+const { adminProtect } = require('../middleware/adminMiddleware');
 
-router.route('/').get(getNotifications).post(protect, createNotification);
+// GET is public — any user (or guest) can read notifications
+// POST is admin-only — only admins can create/broadcast notifications
+router.route('/').get(getNotifications).post(adminProtect, createNotification);
 
 module.exports = router;

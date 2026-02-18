@@ -1,0 +1,31 @@
+Running Gradle task 'assembleDebug'...                          
+lib/features/authentication/domain/repositories/user_repository.dart:2:10: Error: Type 'UserEntity' not found.
+  Future<UserEntity?> signUpUser(String name, String email, String password, String? image);
+         ^^^^^^^^^^
+lib/features/authentication/domain/repositories/user_repository.dart:4:10: Error: Type 'UserEntity' not found.
+  Future<UserEntity?> signInUser(String email, String password);
+         ^^^^^^^^^^
+lib/features/authentication/domain/repositories/user_repository.dart:6:10: Error: Type 'UserEntity' not found.
+  Future<UserEntity?> getUserByEmail(String email);
+         ^^^^^^^^^^
+lib/features/authentication/domain/repositories/user_repository.dart:7:10: Error: Type 'UserEntity' not found.
+  Future<UserEntity?> updateProfile(String name, String email, String password, String? image);
+         ^^^^^^^^^^
+Target kernel_snapshot_program failed: Exception
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileFlutterBuildDebug'.
+> Process 'command 'C:\src\flutter\bin\flutter.bat'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 4s
+Running Gradle task 'assembleDebug'...                              5.6s
+Gradle task assembleDebug failed with exit code 1

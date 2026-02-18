@@ -6,3 +6,17 @@ tmp/
 node_modules/
 ip.txt
 ips.txt
+
+# Environment files — NEVER commit these
+.env
+.env.*
+!.env.example
+
+# Test artifacts
+.jest_mongo_uri
+test_output*.txt
+test_final*.txt
+
+# Build outputs
+build/
+dist/

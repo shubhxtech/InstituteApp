@@ -1,9 +1,5 @@
 import 'dart:developer';
 
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server/gmail.dart';
-import 'package:vertex/utils/functions.dart';
-
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../data_sources/user_data_sources.dart';
@@ -17,7 +13,6 @@ class UserRepositoryImpl implements UserRepository {
     final user = await authDatabase.getUserByEmailAndPassword(email, password);
     if (user != null) {
       return UserEntity(
-          // id: user.id,
           name: user.name,
           email: user.email,
           password: user.password,
@@ -29,27 +24,17 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<SendReport?> sendOTP(String name, String email, String password,
+  Future<bool> sendOTP(String name, String email, String password,
       String? image, int otp) async {
     try {
-      final config = await loadEncryptedConfig();
-      String maintainerEmail = config['LEAD_EMAIL']!;
-      String maintainerPassword = config['LEAD_PASSWORD']!;
-
-      final smtpServer = gmail(maintainerEmail, maintainerPassword);
-
-      final message = Message()
-        ..from = Address(maintainerEmail, "Vertex Team")
-        ..recipients.add(email)
-        ..subject = 'OTP for Sign Up on Vertex: IIT Mandi'
-        ..text =
-            'Dear $name,\nYour OTP for Sign Up on Vertex is $otp.\n\nBest Regards,\nVertex Team\nIIT Mandi, Kamand 175005';
-
-      final sendReport = await send(message, smtpServer);
-      return sendReport;
+       // Call data source (which calls backend)
+       // The backend returns the OTP if successful.
+       final returnedOtp = await authDatabase.sendOtp(name, email, otp);
+       
+       return returnedOtp != null;
     } catch (e) {
       log(e.toString());
-      return null;
+      return false;
     }
   }
 
@@ -59,7 +44,6 @@ class UserRepositoryImpl implements UserRepository {
     final user = await authDatabase.createUser(name, email, password, image);
     if (user != null) {
       return UserEntity(
-          // id: user.id,
           name: user.name,
           email: user.email,
           password: user.password,
@@ -80,7 +64,6 @@ class UserRepositoryImpl implements UserRepository {
     final user = await authDatabase.getUserByEmail(email);
     if (user.isNotEmpty) {
       return UserEntity(
-          // id: user.first.id,
           name: user.first.name,
           email: user.first.email,
           password: user.first.password,

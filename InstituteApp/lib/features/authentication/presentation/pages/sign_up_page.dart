@@ -132,10 +132,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   .copyWith(fontWeight: FontWeight.bold)),
           centerTitle: true,
         ),
-        resizeToAvoidBottomInset: false,
-        body: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
+        resizeToAvoidBottomInset: true,
+        body: Stack(
             alignment: Alignment.topCenter,
             children: [
               SingleChildScrollView(
@@ -301,37 +299,38 @@ class _SignUpPageState extends State<SignUpPage> {
                                 .copyWith(fontFamily: 'Montserrat_Regular'))
                       ])),
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.1),
+                          height: MediaQuery.of(context).size.height * 0.05),
+                      ScreenWidthButton(
+                        text: "Sign Up",
+                        buttonFunc: () async {
+                          bool nameValidator = nameKey.currentState!.validate();
+                          bool emailValidator = emailKey.currentState!.validate();
+                          bool passwordValidator =
+                              passwordKey.currentState!.validate();
+                          // bool imageValidator = imageKey.currentState!.validate();
+
+                          if (nameValidator &&
+                              emailValidator &&
+                              passwordValidator) {
+                            int otp = 1000 + Random().nextInt(9000);
+
+                            BlocProvider.of<AuthenticationBloc>(context).add(
+                                SendOTPEvent(
+                                    name: nameTextEditingController.text,
+                                    email: emailTextEditingController.text,
+                                    password: passwordTextEditingController.text,
+                                    image: picker?.files.first.path,
+                                    otp: otp));
+                          }
+                        },
+                        // isLoading: sendingMail,
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                      ),
                     ]),
               ),
-              Positioned(
-                bottom: 20,
-                child: ScreenWidthButton(
-                  text: "Sign Up",
-                  buttonFunc: () async {
-                    bool nameValidator = nameKey.currentState!.validate();
-                    bool emailValidator = emailKey.currentState!.validate();
-                    bool passwordValidator =
-                        passwordKey.currentState!.validate();
-                    // bool imageValidator = imageKey.currentState!.validate();
 
-                    if (nameValidator &&
-                        emailValidator &&
-                        passwordValidator) {
-                      int otp = 1000 + Random().nextInt(9000);
-
-                      BlocProvider.of<AuthenticationBloc>(context).add(
-                          SendOTPEvent(
-                              name: nameTextEditingController.text,
-                              email: emailTextEditingController.text,
-                              password: passwordTextEditingController.text,
-                              image: picker?.files.first.path,
-                              otp: otp));
-                    }
-                  },
-                  // isLoading: sendingMail,
-                ),
-              ),
               if (sendingMail)
                 Container(
                   height: MediaQuery.of(context).size.height,
@@ -343,7 +342,6 @@ class _SignUpPageState extends State<SignUpPage> {
             ],
           ),
         ),
-      ),
     );
   }
 }

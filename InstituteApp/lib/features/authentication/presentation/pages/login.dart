@@ -82,38 +82,19 @@ class _LoginPageState extends State<LoginPage> {
         resizeToAvoidBottomInset: true,
         body: SizedBox(
           height: MediaQuery.of(context).size.height,
-          child: Stack(
-    alignment: Alignment.topCenter,
-            children: [
-              SingleChildScrollView(
-                reverse: true,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                child: GlassContainer(
+          child: SingleChildScrollView(
+            reverse: true,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            child: Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                GlassContainer(
                   opacity: 0.1,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // SizedBox(
-                        //     height: MediaQuery.of(context).size.height * 0.1),
-                        // Image.asset(
-                        //   "assets/images/logo.png",
-                        //   width: MediaQuery.of(context).size.aspectRatio * 400,
-                        // ),
-                        // SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                        // Text("Vertex\nIIT Mandi",
-                        //     style: Theme.of(context).textTheme.titleLarge),
-                        // SizedBox(
-                        //   height: MediaQuery.of(context).size.height * 0.12,
-                        // ),
-                        // SizedBox(
-                        //   width: MediaQuery.of(context).size.width - 40,
-                        //   child: Text("Login to your Account",
-                        //       maxLines: 2,
-                        //       style: Theme.of(context).textTheme.titleMedium),
-                        // ),
                         SizedBox(
                             height: MediaQuery.of(context).size.height * 0.015),
                         BlocListener<AuthenticationBloc, AuthenticationState>(
@@ -193,31 +174,33 @@ class _LoginPageState extends State<LoginPage> {
                           textInputAction: TextInputAction.done,
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.1,
+                          height: MediaQuery.of(context).size.height * 0.05,
+                        ),
+                        ScreenWidthButton(
+                          text: "Sign in",
+                          buttonFunc: () {
+                            final bool isValidEmail =
+                                emailKey.currentState!.validate();
+                            final bool isValidPassword =
+                                passwordKey.currentState!.validate();
+
+                            if (isValidEmail && isValidPassword) {
+                              BlocProvider.of<AuthenticationBloc>(context).add(
+                                  SignInEvent(
+                                      email: emailTextEditingController.text,
+                                      password:
+                                          passwordTextEditingController.text));
+                            }
+                          },
+                          isLoading: userLoading,
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.05,
                         ),
                       ]),
                 ),
-              ),
-              Positioned(
-                bottom: 20,
-                child: ScreenWidthButton(
-                  text: "Sign in",
-                  buttonFunc: () {
-                    final bool isValidEmail = emailKey.currentState!.validate();
-                    final bool isValidPassword =
-                        passwordKey.currentState!.validate();
-
-                    if (isValidEmail && isValidPassword) {
-                      BlocProvider.of<AuthenticationBloc>(context).add(
-                          SignInEvent(
-                              email: emailTextEditingController.text,
-                              password: passwordTextEditingController.text));
-                    }
-                  },
-                  isLoading: userLoading,
-                ),
-              )
-            ],
+              ],
+            ),
           ),
         ),
       ),

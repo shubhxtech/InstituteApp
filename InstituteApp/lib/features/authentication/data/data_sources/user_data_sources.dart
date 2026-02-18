@@ -123,6 +123,21 @@ class UhlUsersDB {
     }
   }
 
+  // Send OTP
+  Future<int?> sendOtp(String name, String email, int otp) async {
+    try {
+      final response = await _apiClient.post('/auth/send-otp', {
+        'name': name,
+        'email': email,
+        'otp': otp
+      });
+      return response['otp'];
+    } catch (e) {
+      log("Error sending OTP: ${e.toString()}");
+      return null;
+    }
+  }
+
   // Get User By ID - Deprecated/Not implemented
   Future<List<User>> getUserById(String id) async {
     return []; 
