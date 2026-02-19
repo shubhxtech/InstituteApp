@@ -1,4 +1,4 @@
-package com.example.uhl_link
+package com.vertex.instituteapp
 
 import io.flutter.embedding.android.FlutterActivity
 
