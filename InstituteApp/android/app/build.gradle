@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.uhl_link"
+    namespace = "com.vertex.instituteapp"
     compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
@@ -19,23 +19,62 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.uhl_link"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        applicationId = "com.vertex.instituteapp"
         minSdk = flutter.minSdkVersion
-        targetSdk = 34
+        targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
     }
+
+    // ── Release signing ────────────────────────────────────────────
+    // TODO: Before uploading to Play Store:
+    //   1. Generate a keystore:
+    //      keytool -genkey -v -keystore vertex-release.keystore \
+    //        -alias vertex -keyalg RSA -keysize 2048 -validity 10000
+    //   2. Store it outside your source repo (e.g. ~/.android/vertex-release.keystore)
+    //   3. Fill in the values below (or use environment variables)
+    //   4. Remove signingConfig = signingConfigs.debug from the release block below
+    //
+    // signingConfigs {
+    //     release {
+    //         storeFile     = file(System.getenv("KEYSTORE_PATH") ?: "path/to/vertex-release.keystore")
+    //         storePassword = System.getenv("KEYSTORE_PASSWORD") ?: "your_store_password"
+    //         keyAlias      = System.getenv("KEY_ALIAS")         ?: "vertex"
+    //         keyPassword   = System.getenv("KEY_PASSWORD")      ?: "your_key_password"
+    //     }
+    // }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
+            // ── Code shrinking / obfuscation ───────────────────────
             shrinkResources true
-            minifyEnabled true
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            minifyEnabled   true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"),
+                          "proguard-rules.pro"
+
+            // TODO: Replace with your release signing config once keystore is ready
             signingConfig = signingConfigs.debug
+        }
+
+        debug {
+            // Disable shrinking in debug so stack traces remain readable
+            shrinkResources false
+            minifyEnabled   false
+        }
+    }
+
+    // ── Packaging ───────────────────────────────────────────────────
+    packaging {
+        resources {
+            // Exclude duplicate licence files from merged APK
+            excludes += [
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/*.kotlin_module",
+            ]
         }
     }
 }

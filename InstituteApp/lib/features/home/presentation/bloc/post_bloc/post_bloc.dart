@@ -30,6 +30,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     emit(PostItemsLoading());
     try {
       final items = await getPostItems.execute();
+      items.sort((a, b) => b.createdAt.compareTo(a.createdAt));
       emit(PostItemsLoaded(items: items));
     } catch (e) {
       emit(PostItemsLoadingError(message: "Error during fetching items : $e"));

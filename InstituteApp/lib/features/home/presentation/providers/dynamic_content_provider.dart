@@ -21,30 +21,43 @@ class DynamicContentProvider with ChangeNotifier {
   List<CalendarEvent> get calendarEvents => _calendarEvents;
   bool get isLoading => _isLoading;
 
+  bool _hasLoaded = false;
+  bool get hasLoaded => _hasLoaded;
+
   Future<void> fetchAllContent() async {
     _isLoading = true;
     notifyListeners();
 
-    try {
-      final results = await Future.wait([
-        _dataSource.getMessMenu(),
-        _dataSource.getCafeterias(),
-        _dataSource.getCarouselImages(),
-        _dataSource.getCalendarEvents(),
-      ]);
+    // Run each fetch independently — a failure in one must NOT cancel the others.
+    final results = await Future.wait([
+      _dataSource.getMessMenu().catchError((e) {
+        print("Error fetching mess menu: $e");
+        return <String, MessMenu>{};
+      }),
+      _dataSource.getCafeterias().catchError((e) {
+        print("Error fetching cafeterias: $e");
+        return <Cafeteria>[];
+      }),
+      _dataSource.getCarouselImages().catchError((e) {
+        print("Error fetching carousel images: $e");
+        return <CarouselImage>[];
+      }),
+      _dataSource.getCalendarEvents().catchError((e) {
+        print("Error fetching calendar events: $e");
+        return <CalendarEvent>[];
+      }),
+    ]);
 
-      _messMenu = results[0] as Map<String, MessMenu>;
-      _cafeterias = results[1] as List<Cafeteria>;
-      _carouselImages = results[2] as List<CarouselImage>;
-      _calendarEvents = results[3] as List<CalendarEvent>;
-      
-    } catch (e) {
-      print("Error fetching dynamic content: $e");
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
+    _messMenu       = results[0] as Map<String, MessMenu>;
+    _cafeterias     = results[1] as List<Cafeteria>;
+    _carouselImages = results[2] as List<CarouselImage>;
+    _calendarEvents = results[3] as List<CalendarEvent>;
+    _hasLoaded      = true;
+    _isLoading      = false;
+    notifyListeners();
   }
+
+  Future<void> refresh() => fetchAllContent();
 
   // Helper to get raw map for backward compatibility with existing UI
   Map<String, Map<String, List<String>>> get messMenuMap {

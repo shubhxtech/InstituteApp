@@ -132,7 +132,8 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                         side: BorderSide(
                           color: Theme.of(context)
                               .colorScheme
-                              .scrim,
+                              .onSurface
+                              .withOpacity(0.2),
                           width: 1,
                         ),
                         borderRadius: BorderRadius.circular(6),
@@ -196,7 +197,8 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                         side: BorderSide(
                           color: Theme.of(context)
                               .colorScheme
-                              .scrim,
+                              .onSurface
+                              .withOpacity(0.2),
                           width: 1,
                         ),
                         borderRadius: BorderRadius.circular(6),
@@ -240,7 +242,8 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                         side: BorderSide(
                           color: Theme.of(context)
                               .colorScheme
-                              .scrim,
+                              .onSurface
+                              .withOpacity(0.2),
                           width: 1,
                         ),
                         borderRadius: BorderRadius.circular(6),
@@ -313,7 +316,7 @@ Widget aboutJobWidget(BuildContext context, String heading, String value) {
     margin: const EdgeInsets.symmetric(vertical: 10),
     decoration: BoxDecoration(
         border: Border.all(
-          color: Theme.of(context).colorScheme.scrim,
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
           width: 1,
         ),
         borderRadius: BorderRadius.circular(6),

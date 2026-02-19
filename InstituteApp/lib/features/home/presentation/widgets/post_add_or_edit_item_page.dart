@@ -224,7 +224,7 @@ class _PostAddOrEditItemPageState extends State<PostAddOrEditItemPage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                               side: BorderSide(
-                                  color: Theme.of(context).colorScheme.scrim,
+                                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
                                   width: 1.5,
                                   strokeAlign: BorderSide.strokeAlignOutside)),
                           child: ClipRRect(
@@ -233,7 +233,7 @@ class _PostAddOrEditItemPageState extends State<PostAddOrEditItemPage> {
                             child: (picker == null || picker!.files.isEmpty)
                                 ? Icon(
                                     Icons.image_rounded,
-                                    color: Theme.of(context).colorScheme.scrim,
+                                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
                                     size: aspectRatio * 150,
                                   )
                                 : GridView.builder(
@@ -321,7 +321,7 @@ class _PostAddOrEditItemPageState extends State<PostAddOrEditItemPage> {
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color:
-                                            Theme.of(context).colorScheme.scrim,
+                                            Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
                                         width: 1),
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(12)),
@@ -348,7 +348,8 @@ class _PostAddOrEditItemPageState extends State<PostAddOrEditItemPage> {
                                         ?.copyWith(
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .scrim),
+                                                .onSurface
+                                                .withOpacity(0.5)),
                                   ),
                                   dropdownColor: Theme.of(context).cardColor,
                                   onChanged: (String? newValue) {

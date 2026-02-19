@@ -223,7 +223,7 @@ class _LostFoundAddOrEditItemPageState extends State<LostFoundAddOrEditItemPage>
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                             side: BorderSide(
-                                color: Theme.of(context).colorScheme.scrim,
+                                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
                                 width: 1.5,
                                 strokeAlign: BorderSide.strokeAlignOutside),
                           ),
@@ -235,7 +235,7 @@ class _LostFoundAddOrEditItemPageState extends State<LostFoundAddOrEditItemPage>
                                     child: Icon(
                                       Icons.image_rounded,
                                       color:
-                                          Theme.of(context).colorScheme.scrim,
+                                          Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
                                       size: aspectRatio * 150,
                                     ),
                                   )
@@ -366,8 +366,10 @@ class _LostFoundAddOrEditItemPageState extends State<LostFoundAddOrEditItemPage>
                                     vertical: 15, horizontal: 15),
                                 enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color:
-                                            Theme.of(context).colorScheme.scrim,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface
+                                            .withOpacity(0.2),
                                         width: 1),
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(12)),
@@ -394,7 +396,8 @@ class _LostFoundAddOrEditItemPageState extends State<LostFoundAddOrEditItemPage>
                                         ?.copyWith(
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .scrim),
+                                                .onSurface
+                                                .withOpacity(0.5)),
                                   ),
                                   dropdownColor: Theme.of(context).cardColor,
                                   onChanged: (String? newValue) {

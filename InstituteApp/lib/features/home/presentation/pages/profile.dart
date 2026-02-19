@@ -164,7 +164,7 @@ class _ProfileState extends State<Profile> {
           ),
           Divider(
             thickness: 2,
-            color: Theme.of(context).colorScheme.scrim,
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
           ),
           for (var item in items
               .where((item) => widget.isGuest ? item['guest'] == true : true))

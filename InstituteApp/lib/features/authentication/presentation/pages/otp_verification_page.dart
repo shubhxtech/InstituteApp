@@ -154,7 +154,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                           errorTextSpace: 30,
                           enablePinAutofill: true,
                           enabled: true,
-                          textStyle: Theme.of(context).textTheme.labelSmall,
+                          textStyle: Theme.of(context).textTheme.bodyLarge,
                           pinTheme: PinTheme(
                               shape: PinCodeFieldShape.box,
                               borderRadius: BorderRadius.circular(
@@ -163,18 +163,18 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                                   MediaQuery.of(context).size.width * 0.15,
                               fieldWidth:
                                   MediaQuery.of(context).size.width * 0.15,
-                              activeColor: Theme.of(context).colorScheme.scrim,
+                              activeColor: Theme.of(context).primaryColor,
                               activeFillColor: Theme.of(context).cardColor,
-                              selectedColor: Theme.of(context).primaryColor,
+                              selectedColor: Theme.of(context).colorScheme.onSurface,
                               selectedFillColor: Theme.of(context).cardColor,
                               inactiveColor:
-                                  Theme.of(context).colorScheme.scrim,
+                                  Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                               inactiveFillColor: Theme.of(context).cardColor,
                               errorBorderColor:
                                   Theme.of(context).colorScheme.onError),
                           cursorColor: Theme.of(context).primaryColor,
                           animationDuration: const Duration(milliseconds: 300),
-                          // enableActiveFill: true,
+                          enableActiveFill: false,
                           errorAnimationController: errorController,
                           keyboardType: TextInputType.number,
                           autoDisposeControllers: false

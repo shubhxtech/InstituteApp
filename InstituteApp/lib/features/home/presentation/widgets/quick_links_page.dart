@@ -254,7 +254,7 @@ class QuickLinksPage extends StatelessWidget {
             separatorBuilder: (context, index) {
               return Divider(
                 thickness: 2,
-                color: Theme.of(context).colorScheme.scrim,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
               );
             }),
       ),

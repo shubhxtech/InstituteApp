@@ -61,31 +61,35 @@ class _PostDetailPageState extends State<PostDetailPage> {
                         items: widget.images
                             .map((image) => ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
-                                  child: CachedNetworkImage(
-                                      imageUrl: image,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.25,
-                                      width: MediaQuery.of(context).size.width -
-                                          20,
-                                      progressIndicatorBuilder: (context, url,
-                                              progress) =>
-                                          Center(
-                                            child: CircularProgressIndicator(
-                                              value: progress.progress,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimary,
+                                  child: Hero(
+                                    tag: image,
+                                    child: CachedNetworkImage(
+                                        imageUrl: image,
+                                        memCacheHeight: (MediaQuery.of(context).size.height * 0.25 * MediaQuery.of(context).devicePixelRatio).round(),
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.25,
+                                        width: MediaQuery.of(context).size.width -
+                                            20,
+                                        progressIndicatorBuilder: (context, url,
+                                                progress) =>
+                                            Center(
+                                              child: CircularProgressIndicator(
+                                                value: progress.progress,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary,
+                                              ),
                                             ),
-                                          ),
-                                      errorWidget:
-                                          (context, object, stacktrace) {
-                                        return Icon(Icons.error_outline_rounded,
-                                            size: 40,
-                                            color:
-                                                Theme.of(context).primaryColor);
-                                      },
-                                      fit: BoxFit.cover),
+                                        errorWidget:
+                                            (context, object, stacktrace) {
+                                          return Icon(Icons.error_outline_rounded,
+                                              size: 40,
+                                              color:
+                                                  Theme.of(context).primaryColor);
+                                        },
+                                        fit: BoxFit.cover),
+                                  ),
                                 ))
                             .toList(),
                         options: CarouselOptions(
@@ -118,7 +122,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                     decoration: BoxDecoration(
                       color: _currentCarouselIndex == entry.key
                           ? Theme.of(context).primaryColor
-                          : Theme.of(context).colorScheme.scrim,
+                          : Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
                       shape: BoxShape.circle,
                     ),
                   );

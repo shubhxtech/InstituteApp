@@ -155,7 +155,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: Theme.of(context).cardColor,
                             borderRadius: BorderRadius.circular(height * 0.1),
                             border: Border.all(
-                              color: Theme.of(context).colorScheme.scrim,
+                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
                               width: 1.5,
                             ),
                           ),
@@ -166,7 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 child: (picker == null || picker!.files.isEmpty)
                                     ? Icon(
                                   Icons.image_rounded,
-                                  color: Theme.of(context).colorScheme.scrim,
+                                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
                                   size: aspectRatio * 100,
                                 )
                                     : SizedBox(

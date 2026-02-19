@@ -72,7 +72,7 @@ class _CampusMapPageState extends State<CampusMapPage> {
                       child: Text(
                         "Failed to load map.\nPlease check your internet connection.",
                         style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                            color: Theme.of(context).colorScheme.scrim),
+                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
                       ),
                     ),
                   ),

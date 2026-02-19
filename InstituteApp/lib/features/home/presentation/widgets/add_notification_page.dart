@@ -143,7 +143,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                           color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: Theme.of(context).colorScheme.scrim,
+                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
                             width: 1.5,
                           ),
                         ),
@@ -154,7 +154,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                           child: (picker == null || picker!.files.isEmpty)
                               ? Icon(
                                   Icons.image_rounded,
-                                  color: Theme.of(context).colorScheme.scrim,
+                                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
                                   size: aspectRatio * 150,
                                 )
                               : SizedBox(
