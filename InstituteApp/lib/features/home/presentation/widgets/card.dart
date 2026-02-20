@@ -24,11 +24,13 @@ class _CardWidgetState extends State<CardWidget> {
     return GestureDetector(
       onTap: widget.onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: GlassContainer(
           opacity: 0.1,
           child: SizedBox(
-            height: MediaQuery.of(context).size.aspectRatio * 132,
+            // Use a fixed height instead of aspectRatio * 132 which
+            // collapses to ~59px on tall/narrow phones (aspectRatio ≈ 0.45)
+            height: 64,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,11 +40,17 @@ class _CardWidgetState extends State<CardWidget> {
                 Icon(widget.icon,
                     size: 25, color: Theme.of(context).colorScheme.onSurface),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.08),
-                Text(widget.text,
+                Expanded(
+                  child: Text(
+                    widget.text,
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium!
-                        .copyWith(fontSize: 16)),
+                        .copyWith(fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                ),
               ],
             ),
           ),

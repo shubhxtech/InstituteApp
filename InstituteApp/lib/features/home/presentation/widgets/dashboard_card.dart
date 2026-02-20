@@ -13,17 +13,17 @@ class DashboardCard extends StatefulWidget {
     required this.title,
     required this.icon,
     required this.onTap,
-    this.maxLines = 1,
+    this.maxLines = 2,
   });
 
   @override
   State<DashboardCard> createState() => _DashboardCardState();
 }
 
-class _DashboardCardState extends State<DashboardCard> with SingleTickerProviderStateMixin {
+class _DashboardCardState extends State<DashboardCard>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  late Animation<double> _fanAnimation;
 
   @override
   void initState() {
@@ -34,9 +34,6 @@ class _DashboardCardState extends State<DashboardCard> with SingleTickerProvider
     );
     _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
-    _fanAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
     );
   }
 
@@ -60,102 +57,118 @@ class _DashboardCardState extends State<DashboardCard> with SingleTickerProvider
         builder: (context, child) {
           return Transform.scale(
             scale: _scaleAnimation.value,
-            child: GlassContainer(
-              borderRadius: BorderRadius.circular(24),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Hero(
-                    tag: 'icon-${widget.title}',
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Theme.of(context).primaryColor.withOpacity(0.3),
-                            blurRadius: 20,
-                            spreadRadius: -5,
-                          )
-                        ]
-                      ),
-                      child: CircleAvatar(
-                        backgroundColor: widget.icon.runtimeType == IconData 
-                            ? Theme.of(context).primaryColor.withOpacity(0.1) 
-                            : Colors.white,
-                        radius: 32,
-                        child: widget.icon.runtimeType == IconData
-                            ? Icon(widget.icon,
-                                size: 28,
-                                color: Theme.of(context).colorScheme.primary)
-                            : ClipRRect(
-                              borderRadius: BorderRadius.circular(32),
-                              child: CachedNetworkImage(
-                                  imageUrl: widget.icon,
-                                  fit: BoxFit.cover,
-                                  width: 64,
-                                  height: 64,
-                                  progressIndicatorBuilder: (context, url, progress) =>
-                                      Center(
-                                    child: CircularProgressIndicator(
-                                      value: progress.progress,
-                                      color: Theme.of(context).colorScheme.onPrimary,
+            // LayoutBuilder lets us compute a responsive icon radius
+            // based on the actual cell height supplied by the GridView.
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                // Reserve space: vertical padding (8*2) + gap (8) + text (~32)
+                final double reservedPx = 8 + 8 + 8 + 32;
+                final double availableForIcon =
+                    constraints.maxHeight - reservedPx;
+                // Clamp radius between 24 and 32 logical pixels
+                final double radius =
+                    (availableForIcon / 2).clamp(22.0, 32.0);
+
+                return GlassContainer(
+                  borderRadius: BorderRadius.circular(24),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    // Use max so the GridView cell constrains us, not content
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Hero(
+                        tag: 'icon-${widget.title}',
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.3),
+                                blurRadius: 20,
+                                spreadRadius: -5,
+                              )
+                            ],
+                          ),
+                          child: CircleAvatar(
+                            backgroundColor:
+                                widget.icon.runtimeType == IconData
+                                    ? Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(0.1)
+                                    : Colors.white,
+                            radius: radius,
+                            child: widget.icon.runtimeType == IconData
+                                ? Icon(
+                                    widget.icon,
+                                    // Icon scales proportionally with the avatar
+                                    size: radius * 0.85,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary,
+                                  )
+                                : ClipRRect(
+                                    borderRadius:
+                                        BorderRadius.circular(radius),
+                                    child: CachedNetworkImage(
+                                      imageUrl: widget.icon,
+                                      fit: BoxFit.cover,
+                                      width: radius * 2,
+                                      height: radius * 2,
+                                      progressIndicatorBuilder:
+                                          (context, url, progress) =>
+                                              Center(
+                                        child: CircularProgressIndicator(
+                                          value: progress.progress,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
+                                        ),
+                                      ),
+                                      errorWidget:
+                                          (context, object, stacktrace) {
+                                        return Icon(
+                                            Icons.error_outline_rounded,
+                                            size: radius * 0.85,
+                                            color: Theme.of(context)
+                                                .primaryColor);
+                                      },
                                     ),
                                   ),
-                                  errorWidget: (context, object, stacktrace) {
-                                    return Icon(Icons.error_outline_rounded,
-                                        size: 28, color: Theme.of(context).primaryColor);
-                                  },
-                                ),
-                            ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    widget.title,
-                    textAlign: TextAlign.center,
-                    maxLines: widget.maxLines,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.3,
-                          height: 1.2,
+                          ),
                         ),
+                      ),
+                      const SizedBox(height: 8),
+                      Flexible(
+                        child: Text(
+                          widget.title,
+                          textAlign: TextAlign.center,
+                          // Always allow 2 lines — prevents overflow on
+                          // long labels like "Lost/Found"
+                          maxLines: widget.maxLines,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.3,
+                                height: 1.2,
+                              ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              },
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildStackLayer(BuildContext context, {required double offset, required double scale, required double rotation, required double opacity}) {
-    // Using a fixed size that matches roughly the card size, or let it be sized by the stack if possible.
-    // However, in a GridView, constraints are passed down.
-    // We can use a Container with same decoration but no child.
-    return Positioned(
-      top: -offset, 
-      left: 0, 
-      right: 0,
-      bottom: offset, // Pull up visually
-      child: Transform.rotate(
-        angle: rotation,
-        child: Transform.scale(
-          scale: scale,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor.withOpacity(opacity * 0.5),
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: Colors.white.withOpacity(0.05)),
-            ),
-          ),
-        ),
       ),
     );
   }

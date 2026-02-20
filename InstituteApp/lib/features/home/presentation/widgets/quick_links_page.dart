@@ -234,7 +234,7 @@ class QuickLinksPage extends StatelessWidget {
                     crossAxisSpacing: 10,
                     shrinkWrap: true,
                     primary: false,
-                    childAspectRatio: 1.1,
+                    childAspectRatio: 0.9,
                     children: [
                       for (int i = 0; i < iitMandiLinks[keys[idx]]!.length; i++)
                         DashboardCard(

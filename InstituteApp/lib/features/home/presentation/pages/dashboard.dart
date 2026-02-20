@@ -277,11 +277,11 @@ class _DashboardState extends State<Dashboard> {
             child: GridView.count(
               crossAxisCount: 3,
               physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
               shrinkWrap: true,
               primary: false,
-              childAspectRatio: 0.85,
+              childAspectRatio: 0.75,
             children: [
               for (int i = 0; i < items.length; i++)
                 DashboardCard(
