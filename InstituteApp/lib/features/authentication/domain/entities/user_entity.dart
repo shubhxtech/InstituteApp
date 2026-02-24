@@ -3,12 +3,10 @@ class UserEntity {
   final String name;
   final String email;
   final String? password;
-  final String? image;
   final String? token;
 
   UserEntity({
     this.id,
-    required this.image,
     required this.name,
     required this.email,
     this.password,
@@ -19,7 +17,6 @@ class UserEntity {
     return {
       'id': id,
       'name': name,
-      'image': image,
       'email': email,
       'password': password,
       'token': token,
@@ -32,7 +29,6 @@ class UserEntity {
       name: json['name'],
       email: json['email'],
       password: json['password'],
-      image: json['image'],
       token: json['token'],
     );
   }

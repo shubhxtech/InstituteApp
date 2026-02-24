@@ -44,17 +44,17 @@ class AuthenticationBloc
     emit(UserCreating());
     try {
       final user = await signUpUser.execute(
-          event.name, event.email, event.password, event.image);
+          event.name, event.email, event.password);
       if (user != null) {
         const flutterSecureStorage = FlutterSecureStorage();
         flutterSecureStorage.write(
             key: 'user', value: jsonEncode(user.toMap()));
         emit(UserCreated(user: user));
       } else {
-        emit(const UserCreatingError(message: "Login Failed"));
+        emit(const UserCreatingError(message: "Sign up failed"));
       }
     } catch (e) {
-      emit(UserCreatingError(message: "Error during login : $e"));
+      emit(UserCreatingError(message: "Error during sign up: $e"));
     }
   }
 
@@ -63,13 +63,12 @@ class AuthenticationBloc
     emit(OTPSending());
     try {
       bool isSent = await sendOTP.execute(
-          event.name, event.email, event.password, event.image, event.otp);
+          event.name, event.email, event.password, event.otp);
       if (isSent) {
         final user = {
           'name': event.name,
           'email': event.email,
           'password': event.password,
-          'image': event.image ?? ''
         };
         emit(OTPSent(user: UserEntity.fromJson(user), otp: event.otp));
       } else {
@@ -147,17 +146,17 @@ class AuthenticationBloc
     emit(ProfileUpdating());
     try {
       final user = await updateProfile.execute(
-          event.newName, event.email, event.newPassword, event.newImage);
+          event.newName, event.email, event.newPassword);
       if (user != null) {
         const flutterSecureStorage = FlutterSecureStorage();
         flutterSecureStorage.write(
             key: 'user', value: jsonEncode(user.toMap()));
         emit(ProfileUpdatedSuccessfully(user: user));
       } else {
-        emit(const ProfileUpdateError(message: "Login Failed"));
+        emit(const ProfileUpdateError(message: "Profile update failed"));
       }
     } catch (e) {
-      emit(ProfileUpdateError(message: "Error during login : $e"));
+      emit(ProfileUpdateError(message: "Error during profile update: $e"));
     }
   }
 }

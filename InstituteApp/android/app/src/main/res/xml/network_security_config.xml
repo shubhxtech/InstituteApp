@@ -2,13 +2,8 @@
 <!--
   Network Security Configuration — Vertex Institute App
   =====================================================
-  All traffic is HTTPS-only by default.
-  The backend server (14.139.34.11:8355) is allowlisted for HTTP
-  because it currently does not have SSL configured.
-  
-  TODO: Once your backend has a valid SSL certificate, remove the
-  <domain-config> block below and let the base-config enforce HTTPS
-  for everything, including your API server.
+  All traffic is HTTPS-only. Backend is served at https://vertex.iitmandi.co.in
+  No cleartext HTTP exceptions are needed.
 -->
 <network-security-config>
 
@@ -20,19 +15,9 @@
         </trust-anchors>
     </base-config>
 
-    <!-- ── Backend server HTTP allowlist (temporary) ─────── -->
-    <!--
-        Allow cleartext HTTP to this specific server only.
-        All other hosts still require HTTPS.
-        Remove this block once your backend has SSL/TLS.
-    -->
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="false">14.139.34.11</domain>
-    </domain-config>
-
     <!-- ── Debug builds only ─────────────────────────────── -->
     <!--
-        Allows cleartext and user-installed CAs in debug mode
+        Allows user-installed CAs in debug mode
         so developers can inspect traffic with Charles / mitmproxy.
     -->
     <debug-overrides>

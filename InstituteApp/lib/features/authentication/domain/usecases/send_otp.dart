@@ -5,7 +5,7 @@ class SendOTP {
 
   SendOTP(this.repository);
 
-  Future<bool> execute(String name, String email, String password, String? image, int otp) async {
-    return await repository.sendOTP(name, email, password, image, otp);
+  Future<bool> execute(String name, String email, String password, int otp) async {
+    return await repository.sendOTP(name, email, password, otp);
   }
 }

@@ -8,6 +8,7 @@ import Carousel from './pages/Carousel';
 import Calendar from './pages/Calendar';
 import ContentModeration from './pages/ContentModeration';
 import Notifications from './pages/Notifications';
+import Feeds from './pages/Feeds';
 import { isAuthenticated } from './utils/auth';
 
 // Protected Route Wrapper
@@ -39,6 +40,7 @@ function App() {
           <Route path="buy-sell" element={<ContentModeration type="buy-sell" title="Buy & Sell" />} />
           <Route path="lost-found" element={<ContentModeration type="lost-found" title="Lost & Found" />} />
           <Route path="posts" element={<ContentModeration type="posts" title="Posts" />} />
+          <Route path="feeds" element={<Feeds />} />
           <Route path="notifications" element={<Notifications />} />
         </Route>
       </Routes>

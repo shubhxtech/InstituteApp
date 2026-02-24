@@ -192,7 +192,6 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                                       name: widget.user.name,
                                       email: widget.user.email,
                                       password: widget.user.password ?? "",
-                                      image: widget.user.image,
                                       otp: widget.otp));
                             },
                             child: Text("Resend Code",
@@ -247,8 +246,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                             SignUpEvent(
                                 name: widget.user.name,
                                 email: widget.user.email,
-                                password: widget.user.password ?? "",
-                                image: widget.user.image ?? ""));
+                                password: widget.user.password ?? ""));
                       }
                     }),
               ),

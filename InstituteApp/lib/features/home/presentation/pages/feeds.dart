@@ -62,8 +62,9 @@ class _FeedPageState extends State<FeedPage> {
               return const Center(child: CircularProgressIndicator());
             } else if (state is PostItemsLoaded) {
               // Filtering happens here, but sorting is in Bloc now.
+              const feedTypes = {"Feed", "announcement", "event", "achievement", "general"};
               List<PostItemEntity> feedItems =
-                  state.items.where((post) => post.type == "Feed").toList();
+                  state.items.where((post) => feedTypes.contains(post.type)).toList();
               
               if (feedItems.isEmpty) {
                 return Center(

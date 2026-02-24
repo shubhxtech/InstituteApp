@@ -6,7 +6,7 @@ class UpdateProfile {
 
   UpdateProfile(this.repository);
 
-  Future<UserEntity?> execute(String name, String email, String password, String? image) {
-    return repository.updateProfile(name, email, password, image);
+  Future<UserEntity?> execute(String name, String email, String password) {
+    return repository.updateProfile(name, email, password);
   }
 }

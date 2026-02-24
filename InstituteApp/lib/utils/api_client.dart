@@ -3,10 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiClient {
-  // ⚠️ UPDATE THIS before building for production:
-  // Replace with your server's IP or domain, e.g. 'http://192.168.1.100:5000/api'
-  // or 'https://api.yourdomain.com/api'
-  static const String baseUrl = 'http://14.139.34.11:8355/api';
+  static const String baseUrl = 'https://vertex.iitmandi.co.in/api';
   final FlutterSecureStorage storage = const FlutterSecureStorage();
 
   Future<Map<String, String>> _getHeaders() async {

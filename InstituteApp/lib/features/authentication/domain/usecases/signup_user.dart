@@ -6,7 +6,7 @@ class SignUpUser {
 
   SignUpUser(this.repository);
 
-  Future<UserEntity?> execute(String name, String email, String password, String? image) {
-    return repository.signUpUser(name, email, password, image);
+  Future<UserEntity?> execute(String name, String email, String password) {
+    return repository.signUpUser(name, email, password);
   }
 }

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
@@ -58,28 +57,12 @@ class _ProfileState extends State<Profile> {
                   borderRadius: BorderRadius.circular(aspectRatio * 90),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(aspectRatio * 90),
-                    child: (widget.isGuest || widget.user!.image == "")
-                        ? Icon(Icons.person,
-                            size: 30,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withAlpha(150))
-                        : CachedNetworkImage(
-                            imageUrl: widget.user!.image ?? "",
-                            fit: BoxFit.cover,
-                            progressIndicatorBuilder:
-                                (context, string, loadingProgress) {
-                              return CircularProgressIndicator(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary);
-                            },
-                            errorWidget: (context, object, trace) {
-                              return Icon(Icons.error_outline_outlined,
-                                  size: 30,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary);
-                            }),
+                    child: Icon(Icons.person,
+                        size: 30,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withAlpha(150)),
                   ),
                 ),
               ),

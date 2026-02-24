@@ -55,6 +55,12 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
+    // Guard against NoSQL operator injection
+    if (typeof email !== 'string' || typeof password !== 'string') {
+        res.status(400);
+        throw new Error('Invalid input');
+    }
+
     console.log(`[LOGIN ATTEMPT] Email: ${email}`);
 
     // Check for user email
@@ -100,6 +106,13 @@ const getMe = asyncHandler(async (req, res) => {
 // @access  Public
 const checkEmail = asyncHandler(async (req, res) => {
     const { email } = req.body;
+
+    // Guard against NoSQL operator injection
+    if (typeof email !== 'string') {
+        res.status(400);
+        throw new Error('Invalid input');
+    }
+
     const user = await User.findOne({ email });
     if (user) {
         res.status(200).json({ exists: true });
@@ -147,6 +160,13 @@ const updateProfile = asyncHandler(async (req, res) => {
 // For migration parity, we'll allow updating by email if it exists.
 const updatePassword = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
+
+    // Guard against NoSQL operator injection
+    if (typeof email !== 'string' || typeof password !== 'string') {
+        res.status(400);
+        throw new Error('Invalid input');
+    }
+
     const user = await User.findOne({ email });
 
     if (user) {

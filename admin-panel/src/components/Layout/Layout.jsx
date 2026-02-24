@@ -9,7 +9,8 @@ import {
     Search,
     MessageSquare,
     LogOut,
-    Bell
+    Bell,
+    Rss
 } from 'lucide-react';
 import { logout } from '../../utils/auth';
 
@@ -27,6 +28,7 @@ export default function Layout() {
         { name: 'Cafeteria', path: '/cafeteria', icon: Coffee },
         { name: 'Carousel', path: '/carousel', icon: Image },
         { name: 'Calendar', path: '/calendar', icon: Calendar },
+        { name: 'Feeds', path: '/feeds', icon: Rss },
         { name: 'Buy & Sell', path: '/buy-sell', icon: ShoppingBag },
         { name: 'Lost & Found', path: '/lost-found', icon: Search },
         { name: 'Posts', path: '/posts', icon: MessageSquare },

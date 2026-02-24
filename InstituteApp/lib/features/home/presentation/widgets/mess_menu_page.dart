@@ -90,13 +90,23 @@ class _MessMenuPageState extends State<MessMenuPage> with TickerProviderStateMix
           );
         }
         
-        List<String> days = messMenu.keys.toList();
-        
+        // Build a cyclic week starting from today
+        const List<String> weekOrder = [
+          'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+          'Friday', 'Saturday', 'Sunday',
+        ];
+        final String todayName = weekOrder[DateTime.now().weekday - 1]; // weekday: 1=Mon…7=Sun
+        final List<String> allDays = messMenu.keys.toList();
+        // Rotate so today comes first; days not in the map are skipped
+        final int todayIndex = allDays.indexOf(todayName);
+        final List<String> days = todayIndex < 0
+            ? allDays
+            : [...allDays.sublist(todayIndex), ...allDays.sublist(0, todayIndex)];
+
         // Re-initialize tab controller if length changes
         if (_tabController.length != days.length) {
-           _tabController.dispose();
-           _tabController = TabController(length: days.length, vsync: this);
-           _tabController.animateTo(0);
+          _tabController.dispose();
+          _tabController = TabController(length: days.length, vsync: this);
         }
         
         return Scaffold(
@@ -139,7 +149,17 @@ class _MessMenuPageState extends State<MessMenuPage> with TickerProviderStateMix
               ),
               indicatorSize: TabBarIndicatorSize.tab,
               dividerColor: Colors.transparent,
-              tabs: days.map((day) => Tab(text: day)).toList(),
+              tabs: days.map((day) {
+                final bool isToday = day == todayName;
+                return Tab(
+                  child: Text(
+                    isToday ? '$day  •' : day,
+                    style: TextStyle(
+                      fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
           ),
         ),

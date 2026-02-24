@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'dart:math';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -59,31 +57,9 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isEmailValid = false;
   bool sendingMail = false;
 
-  //
-  FilePickerResult? picker;
-
-  Future<void> pickImage() async {
-    try {
-      FilePickerResult? files = await FilePicker.platform.pickFiles(
-          allowMultiple: false,
-          type: FileType.custom,
-          allowedExtensions: ["jpg", "jpeg", "png", "gif"]);
-      setState(() {
-        picker = files;
-      });
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Error uploading images.",
-              style: Theme.of(context).textTheme.labelSmall),
-          backgroundColor: Theme.of(context).cardColor));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    // final width = MediaQuery.of(context).size.width;
-    final aspectRatio = MediaQuery.of(context).size.aspectRatio;
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) {
         if (state is OTPSending) {
@@ -144,42 +120,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      GestureDetector(
-                        onTap: () async {
-                          await pickImage();
-                        },
-                        child: Container(
-                          width: height * 0.2,
-                          height: height * 0.2,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.circular(height * 0.1),
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
-                              width: 1.5,
-                            ),
-                          ),
-                          child: Center(
-                              child: ClipRRect(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(height * 0.1)),
-                                child: (picker == null || picker!.files.isEmpty)
-                                    ? Icon(
-                                  Icons.image_rounded,
-                                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
-                                  size: aspectRatio * 100,
-                                )
-                                    : SizedBox(
-                                    width: height * 0.2,
-                                    height: height * 0.2,
-                                    child: Image.file(
-                                      File(picker!.files.first.path!),
-                                      fit: BoxFit.cover,
-                                      alignment: Alignment.center,
-                                    )),
-                              )),
-                        ),
-                      ),
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.03),
                       FormFieldWidget(
@@ -319,7 +259,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                     name: nameTextEditingController.text,
                                     email: emailTextEditingController.text,
                                     password: passwordTextEditingController.text,
-                                    image: picker?.files.first.path,
                                     otp: otp));
                           }
                         },

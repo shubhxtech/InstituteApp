@@ -16,7 +16,6 @@ class UserRepositoryImpl implements UserRepository {
           name: user.name,
           email: user.email,
           password: user.password,
-          image: user.image,
           token: user.token);
     } else {
       return null;
@@ -24,14 +23,10 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<bool> sendOTP(String name, String email, String password,
-      String? image, int otp) async {
+  Future<bool> sendOTP(String name, String email, String password, int otp) async {
     try {
-       // Call data source (which calls backend)
-       // The backend returns the OTP if successful.
-       final returnedOtp = await authDatabase.sendOtp(name, email, otp);
-       
-       return returnedOtp != null;
+      final returnedOtp = await authDatabase.sendOtp(name, email, otp);
+      return returnedOtp != null;
     } catch (e) {
       log(e.toString());
       return false;
@@ -39,15 +34,13 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<UserEntity?> signUpUser(
-      String name, String email, String password, String? image) async {
-    final user = await authDatabase.createUser(name, email, password, image);
+  Future<UserEntity?> signUpUser(String name, String email, String password) async {
+    final user = await authDatabase.createUser(name, email, password);
     if (user != null) {
       return UserEntity(
           name: user.name,
           email: user.email,
           password: user.password,
-          image: user.image,
           token: user.token);
     } else {
       return null;
@@ -66,22 +59,15 @@ class UserRepositoryImpl implements UserRepository {
       return UserEntity(
           name: user.first.name,
           email: user.first.email,
-          password: user.first.password,
-          image: user.first.image);
+          password: user.first.password);
     } else {
       return null;
     }
   }
 
   @override
-  Future<UserEntity?> updateProfile(
-      String name, String email, String password, String? image) async {
-    UserEntity? user =
-        await authDatabase.updateProfile(name, email, password, image);
-    if (user != null) {
-      return user;
-    } else {
-      return null;
-    }
+  Future<UserEntity?> updateProfile(String name, String email, String password) async {
+    UserEntity? user = await authDatabase.updateProfile(name, email, password);
+    return user;
   }
 }

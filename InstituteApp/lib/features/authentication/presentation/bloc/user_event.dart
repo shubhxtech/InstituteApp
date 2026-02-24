@@ -10,20 +10,18 @@ abstract class AuthenticationEvent extends Equatable {
 class SignUpEvent extends AuthenticationEvent {
   final String name;
   final String email;
-  final String? image;
   final String password;
 
-  const SignUpEvent({required this.name, required this.email, required this.password, required this.image});
+  const SignUpEvent({required this.name, required this.email, required this.password});
 }
 
 class SendOTPEvent extends AuthenticationEvent {
   final String name;
   final String email;
-  final String? image;
   final String password;
   final int otp;
 
-  const SendOTPEvent({required this.name, required this.email, required this.password, required this.image, required this.otp});
+  const SendOTPEvent({required this.name, required this.email, required this.password, required this.otp});
 }
 
 class SignInEvent extends AuthenticationEvent {
@@ -43,10 +41,9 @@ class PasswordUpdateEvent extends AuthenticationEvent {
 class ProfileUpdateEvent extends AuthenticationEvent {
   final String newName;
   final String email;
-  final String? newImage;
   final String newPassword;
 
-  const ProfileUpdateEvent({required this.newName, required this.email, required this.newPassword, required this.newImage});
+  const ProfileUpdateEvent({required this.newName, required this.email, required this.newPassword});
 }
 
 class GetUserByEmailEvent extends AuthenticationEvent {

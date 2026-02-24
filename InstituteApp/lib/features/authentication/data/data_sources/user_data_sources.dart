@@ -2,39 +2,28 @@ import 'dart:developer';
 import 'package:vertex/features/authentication/domain/entities/user_entity.dart';
 import 'package:vertex/utils/api_client.dart';
 import '../models/user_model.dart';
-// import 'package:vertex/utils/password_functions.dart'; // No longer needed for hashing
+import 'package:vertex/utils/password_functions.dart';
 
 class UhlUsersDB {
   final ApiClient _apiClient = ApiClient();
 
   UhlUsersDB();
 
-  // No-op for compatibility
   static Future<void> connect(String connectionURL) async {
     log("UhlUsersDB: connect called (No-op for API)");
   }
 
-  // Get All Data - Deprecated/Not supported in API for client
-  Future<List<Object>?> getData() async {
-    return [];
-  }
+  Future<List<Object>?> getData() async => [];
+  Future<List<User>?> getUsers() async => [];
 
-  // Get All Users Method - Deprecated
-  Future<List<User>?> getUsers() async {
-    return [];
-  }
-
-  // create
-  Future<User?> createUser(
-      String name, String email, String password, String? image) async {
+  // Register
+  Future<User?> createUser(String name, String email, String password) async {
     try {
       final response = await _apiClient.post('/auth/register', {
         'name': name,
         'email': email,
-        'password': password, // Send raw password (over HTTPS in prod)
-        'image': image ?? ""
+        'password': sha256HashPassword(password),
       });
-      
       return User.fromJson(response);
     } catch (e) {
       log("Error creating user: ${e.toString()}");
@@ -47,7 +36,7 @@ class UhlUsersDB {
     try {
       await _apiClient.put('/auth/password', {
         'email': email,
-        'password': password
+        'password': sha256HashPassword(password)
       });
       return true;
     } catch (e) {
@@ -56,17 +45,13 @@ class UhlUsersDB {
     }
   }
 
-  // Update Profile
-  Future<UserEntity?> updateProfile(
-      String name, String email, String password, String? image) async {
+  // Update Profile (name + optional password, no image)
+  Future<UserEntity?> updateProfile(String name, String email, String password) async {
     try {
-       // Note: Token should be handled by ApiClient from storage
-       // We pass fields to update
-       final response = await _apiClient.put('/auth/profile', {
+      final response = await _apiClient.put('/auth/profile', {
         'name': name,
         'email': email,
-        if (password.isNotEmpty) 'password': password,
-        'image': image ?? ""
+        if (password.isNotEmpty) 'password': sha256HashPassword(password),
       });
       return UserEntity.fromJson(response);
     } catch (e) {
@@ -75,25 +60,12 @@ class UhlUsersDB {
     }
   }
 
-  // Update Image
-  Future<bool?> updateImage(String id, String image) async {
-    try {
-      await _apiClient.put('/auth/profile', {
-        'image': image
-      });
-      return true;
-    } catch (e) {
-      log(e.toString());
-      return false;
-    }
-  }
-
-  // Get By Email And Password (Login)
+  // Login
   Future<User?> getUserByEmailAndPassword(String email, String password) async {
     try {
       final response = await _apiClient.post('/auth/login', {
         'email': email,
-        'password': password
+        'password': sha256HashPassword(password)
       });
       return User.fromJson(response);
     } catch (e) {
@@ -102,21 +74,14 @@ class UhlUsersDB {
     }
   }
 
-  // Get User By Email (Check existence)
+  // Check email existence
   Future<List<User>> getUserByEmail(String email) async {
     try {
-      final response = await _apiClient.post('/auth/check-email', {
-        'email': email
-      });
+      final response = await _apiClient.post('/auth/check-email', {'email': email});
       if (response['exists'] == true) {
-        // Return a dummy user to satisfy List<User> return type 
-        // expected by repository checking `isNotEmpty`
-        return [
-           User(id: 'exists', image: '', name: '', email: email, password: '')
-        ];
-      } else {
-        return [];
+        return [User(id: 'exists', name: '', email: email, password: '')];
       }
+      return [];
     } catch (e) {
       log(e.toString());
       return [];
@@ -138,13 +103,6 @@ class UhlUsersDB {
     }
   }
 
-  // Get User By ID - Deprecated/Not implemented
-  Future<List<User>> getUserById(String id) async {
-    return []; 
-  }
-
-  // Close Connection
-  Future<void> close() async {
-    log('Connection (Fake) closed');
-  }
+  Future<List<User>> getUserById(String id) async => [];
+  Future<void> close() async => log('Connection (Fake) closed');
 }
